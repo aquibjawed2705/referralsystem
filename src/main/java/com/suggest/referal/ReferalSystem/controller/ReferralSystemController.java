@@ -40,7 +40,9 @@ public class ReferralSystemController {
     try {
       log.info("Received request for search string: {}", searchString);
       String searchResult = flipkartClient.getFlipkartSearchResult(searchString).getBody();
+      log.info("Search Result is {}", searchResult);
       Set<String> productIds = ProductUtils.getFilteredData(searchResult);
+      log.info("Product Ids are {}", productIds);
       List<Product> products = new ArrayList<>();
       for (String productId:productIds) {
         ResponseEntity<String> result = flipkartClient.getFlipkartDataByProductId(productId);
