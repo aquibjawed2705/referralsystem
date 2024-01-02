@@ -62,13 +62,27 @@ public class ReferralSystemController {
     return searchResponse;
   }
 
-  @GetMapping("/save/url")
-  public String saveUrl(@RequestParam String name, @RequestParam String url) {
+  @GetMapping("/fetch")
+  public String fetch(@RequestParam String name, @RequestParam String url) {
     UrlFinder urlFinder = new UrlFinder();
     urlFinder.setName(name);
     getData(url, urlFinder);
     urlService.saveUrlByName(urlFinder);
     return "Data saved successfully!!";
+  }
+
+
+  @GetMapping("/save/url")
+  public String saveUrl(@RequestParam String searchString) {
+    try {
+      log.info("Received request for search string: {}", searchString);
+      String searchResult = flipkartClient.getFlipkartDataByFetch(searchString).getBody();
+      log.info("Search Result is {}", searchResult);
+      return searchResult;
+    }catch (Exception e) {
+      log.error("Exception is {}", e);
+    }
+   return "unable to fetch data!!";
   }
 
   private void getData(String link, UrlFinder urlFinder) {

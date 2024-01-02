@@ -19,7 +19,7 @@ public class ReferalSystemApplication {
     SimpleClientHttpRequestFactory requestFactory = new SimpleClientHttpRequestFactory();
 
     // Set the read timeout in milliseconds
-    int timeout = 10000; // 5 seconds
+    int timeout = 120000; // 5 seconds
     requestFactory.setReadTimeout(timeout);
 
     restTemplate.setRequestFactory(requestFactory);
