@@ -53,7 +53,7 @@ public class FlipkartClient {
     return response;
   }
 
-  public ResponseEntity<String> getFlipkartDataByFetch(String searchQuery){
+  public ResponseEntity<String> getFlipkartDataByFetch(String searchQuery) {
     String url = "https://1.rome.api.flipkart.com/api/4/page/fetch";
 
     HttpHeaders headers = new HttpHeaders();
@@ -72,14 +72,9 @@ public class FlipkartClient {
     headers.set("sec-ch-ua", "\"Not_A Brand\";v=\"8\", \"Chromium\";v=\"120\", \"Google Chrome\";v=\"120\"");
     headers.set("sec-ch-ua-mobile", "?0");
     headers.set("sec-ch-ua-platform", "\"Windows\"");
-
     String requestBody = String.format("{\"pageUri\":\"/search?q=%s&otracker=search&otracker1=search&marketplace=FLIPKART&as-show=off&as=off\",\"pageContext\":{\"fetchSeoData\":true,\"paginatedFetch\":false,\"pageNumber\":1},\"requestContext\":{\"type\":\"BROWSE_PAGE\",\"ssid\":\"kaz6vjr8gg0000001704167842908\",\"sqid\":\"eoe4ww1ag00000001704168232880\"}}", searchQuery);
     HttpEntity<String> requestEntity = new HttpEntity<>(requestBody, headers);
-
     ResponseEntity<String> responseEntity = restTemplate.exchange(url, HttpMethod.POST, requestEntity, String.class);
-
-    log.info("Response status code: " + responseEntity.getStatusCode());
-    log.info("Response body: " + responseEntity.getBody());
     return responseEntity;
   }
 }
