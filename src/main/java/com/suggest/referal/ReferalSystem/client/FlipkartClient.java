@@ -54,27 +54,31 @@ public class FlipkartClient {
   }
 
   public ResponseEntity<String> getFlipkartDataByFetch(String searchQuery) {
-    String url = "https://1.rome.api.flipkart.com/api/4/page/fetch";
-
-    HttpHeaders headers = new HttpHeaders();
-    headers.setContentType(MediaType.APPLICATION_JSON);
-    headers.set("Accept", "*/*");
-    headers.set("Accept-Language", "en-US,en;q=0.9");
-    headers.set("Connection", "keep-alive");
-    headers.set("Content-Type", "application/json");
-    headers.set("Origin", "https://www.flipkart.com");
-    headers.set("Referer", "https://www.flipkart.com/");
-    headers.set("Sec-Fetch-Dest", "empty");
-    headers.set("Sec-Fetch-Mode", "cors");
-    headers.set("Sec-Fetch-Site", "same-site");
-    headers.set("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36");
-    headers.set("X-User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 FKUA/website/42/website/Desktop");
-    headers.set("sec-ch-ua", "\"Not_A Brand\";v=\"8\", \"Chromium\";v=\"120\", \"Google Chrome\";v=\"120\"");
-    headers.set("sec-ch-ua-mobile", "?0");
-    headers.set("sec-ch-ua-platform", "\"Windows\"");
-    String requestBody = String.format("{\"pageUri\":\"/search?q=%s&otracker=search&otracker1=search&marketplace=FLIPKART&as-show=off&as=off\",\"pageContext\":{\"fetchSeoData\":true,\"paginatedFetch\":false,\"pageNumber\":1},\"requestContext\":{\"type\":\"BROWSE_PAGE\",\"ssid\":\"kaz6vjr8gg0000001704167842908\",\"sqid\":\"eoe4ww1ag00000001704168232880\"}}", searchQuery);
-    HttpEntity<String> requestEntity = new HttpEntity<>(requestBody, headers);
-    ResponseEntity<String> responseEntity = restTemplate.exchange(url, HttpMethod.POST, requestEntity, String.class);
+    ResponseEntity<String> responseEntity=null;
+    try {
+      String url = "https://1.rome.api.flipkart.com/api/4/page/fetch";
+      HttpHeaders headers = new HttpHeaders();
+      headers.setContentType(MediaType.APPLICATION_JSON);
+      headers.set("Accept", "*/*");
+      headers.set("Accept-Language", "en-US,en;q=0.9");
+      headers.set("Connection", "keep-alive");
+      headers.set("Content-Type", "application/json");
+      headers.set("Origin", "https://www.flipkart.com");
+      headers.set("Referer", "https://www.flipkart.com/");
+      headers.set("Sec-Fetch-Dest", "empty");
+      headers.set("Sec-Fetch-Mode", "cors");
+      headers.set("Sec-Fetch-Site", "same-site");
+      headers.set("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36");
+      headers.set("X-User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 FKUA/website/42/website/Desktop");
+      headers.set("sec-ch-ua", "\"Not_A Brand\";v=\"8\", \"Chromium\";v=\"120\", \"Google Chrome\";v=\"120\"");
+      headers.set("sec-ch-ua-mobile", "?0");
+      headers.set("sec-ch-ua-platform", "\"Windows\"");
+      String requestBody = String.format("{\"pageUri\":\"/search?q=%s&otracker=search&otracker1=search&marketplace=FLIPKART&as-show=off&as=off\",\"pageContext\":{\"fetchSeoData\":true,\"paginatedFetch\":false,\"pageNumber\":1},\"requestContext\":{\"type\":\"BROWSE_PAGE\",\"ssid\":\"kaz6vjr8gg0000001704167842908\",\"sqid\":\"eoe4ww1ag00000001704168232880\"}}", searchQuery);
+      HttpEntity<String> requestEntity = new HttpEntity<>(requestBody, headers);
+      responseEntity = restTemplate.exchange(url, HttpMethod.POST, requestEntity, String.class);
+    } catch (Exception e) {
+      log.info("Exception while fetching data for searchQuery from flipkart and exception is {}", e);
+    }
     return responseEntity;
   }
 }
