@@ -2,12 +2,17 @@ package com.suggest.referal.ReferalSystem.client;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Optional;
 
 @Component
@@ -52,19 +57,25 @@ public class FlipkartClient {
     }
     return response;
   }
-
   public ResponseEntity<String> getFlipkartDataByFetch(String searchQuery) {
-    ResponseEntity<String> responseEntity=null;
+    ResponseEntity<String> responseEntity = null;
     try {
       String url = "https://1.rome.api.flipkart.com/api/4/page/fetch";
+
       HttpHeaders headers = new HttpHeaders();
       headers.set("X-User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 FKUA/website/42/website/Desktop");
-      String requestBody = String.format("{\"pageUri\":\"/search?q=%s&otracker=search&otracker1=search&marketplace=FLIPKART&as-show=off&as=off\",\"pageContext\":{\"fetchSeoData\":true,\"paginatedFetch\":false,\"pageNumber\":1},\"requestContext\":{\"type\":\"BROWSE_PAGE\",\"ssid\":\"kaz6vjr8gg0000001704167842908\",\"sqid\":\"eoe4ww1ag00000001704168232880\"}}", searchQuery);
+
+      // Adjusted the URL parameters based on robots.txt rules
+      String encodedSearchQuery = URLEncoder.encode(searchQuery, StandardCharsets.UTF_8.toString());
+      String requestBody = String.format("{\"pageUri\":\"/search?q=%s&otracker=search&otracker1=search&marketplace=FLIPKART&as-show=off&as=off\",\"pageContext\":{\"fetchSeoData\":true,\"paginatedFetch\":false,\"pageNumber\":1},\"requestContext\":{\"type\":\"BROWSE_PAGE\",\"ssid\":\"kaz6vjr8gg0000001704167842908\",\"sqid\":\"eoe4ww1ag00000001704168232880\"}}", encodedSearchQuery);
+
       HttpEntity<String> requestEntity = new HttpEntity<>(requestBody, headers);
+
       responseEntity = restTemplate.exchange(url, HttpMethod.POST, requestEntity, String.class);
     } catch (Exception e) {
-      log.info("Exception while fetching data for searchQuery from flipkart and exception is {}", e);
+      log.error("Exception while fetching data for searchQuery from Flipkart. Exception: {}", e.getMessage());
     }
     return responseEntity;
   }
+
 }
