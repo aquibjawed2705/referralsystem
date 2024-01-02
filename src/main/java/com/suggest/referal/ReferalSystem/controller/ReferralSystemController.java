@@ -61,18 +61,7 @@ public class ReferralSystemController {
     log.info("Response is {}", searchResponse);
     return searchResponse;
   }
-
   @GetMapping("/fetch")
-  public String fetch(@RequestParam String name, @RequestParam String url) {
-    UrlFinder urlFinder = new UrlFinder();
-    urlFinder.setName(name);
-    getData(url, urlFinder);
-    urlService.saveUrlByName(urlFinder);
-    return "Data saved successfully!!";
-  }
-
-
-  @GetMapping("/save/url")
   public String saveUrl(@RequestParam String searchString) {
     try {
       log.info("Received request for search string: {}", searchString);
