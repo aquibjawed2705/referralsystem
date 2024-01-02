@@ -34,4 +34,17 @@ public class ProductUtils {
     }
     return productIds;
   }
+
+  public static Set<String> getFilteredDataFromFetch(String s) {
+    Set<String> productIds = new HashSet<>();
+    String patternString = "\"productId\"\\s*:\\s*\"([^\"]+)\"";
+    Pattern pattern = Pattern.compile(patternString);
+    Matcher matcher = pattern.matcher(s);
+    while (matcher.find()) {
+      String extractedValue = matcher.group(1);
+      log.info("Extracted Value: " + extractedValue);
+      productIds.add(extractedValue);
+    }
+    return productIds;
+  }
 }
