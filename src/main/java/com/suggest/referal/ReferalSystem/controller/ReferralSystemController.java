@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.*;
 
 @RestController
 @RequestMapping("/referral/system")
@@ -44,16 +45,36 @@ public class ReferralSystemController {
       Set<String> productIds = ProductUtils.getFilteredDataFromFetch(searchResult);
       log.info("Product Ids are {}", productIds);
       List<Product> products = new ArrayList<>();
-      for (String productId:productIds) {
-        ResponseEntity<String> result = flipkartClient.getFlipkartDataByProductId(productId);
-        if (result != null) {
-          Product product = ResponseTransformer.transformIntoProduct(result.getBody());
-          products.add(product);
+      ExecutorService executorService = Executors.newFixedThreadPool(5); // Adjust the pool size as needed
+      List<Future<Product>> futures = new ArrayList<>();
+      for (String productId : productIds) {
+        Callable<Product> callable = () -> {
+          ResponseEntity<String> result = flipkartClient.getFlipkartDataByProductId(productId);
+          if (result != null) {
+            return ResponseTransformer.transformIntoProduct(result.getBody());
+          }
+          return null;
+        };
+
+        futures.add(executorService.submit(callable));
+      }
+
+      for (Future<Product> future : futures) {
+        try {
+          Product product = future.get(); // This will block until the result is available
+          if (product != null) {
+            products.add(product);
+          }
+        } catch (InterruptedException | ExecutionException e) {
+         log.error("Exception while paralleism is {}", e);
         }
+
         if (products.size() >= count) {
           break;
         }
       }
+      executorService.shutdown(); // Shutdown the executor service
+
       searchResponse = ResponseBuilder.buildSearchResponses(new ProductResponses(products));
     } catch (Exception e) {
       log.error("Exception is {}", e);
