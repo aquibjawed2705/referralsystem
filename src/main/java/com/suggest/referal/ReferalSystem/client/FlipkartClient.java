@@ -60,7 +60,7 @@ public class FlipkartClient {
   public ResponseEntity<String> getFlipkartDataByFetch(String searchQuery) {
     ResponseEntity<String> responseEntity = null;
     try {
-      String url = "https://1.rome.api.flipkart.com/api/4/page/fetch";
+      String url = "http://1.rome.api.flipkart.com/api/4/page/fetch";
 
       HttpHeaders headers = new HttpHeaders();
       headers.set("X-User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 FKUA/website/42/website/Desktop");
