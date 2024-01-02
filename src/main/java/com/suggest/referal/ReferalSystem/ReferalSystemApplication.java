@@ -3,6 +3,7 @@ package com.suggest.referal.ReferalSystem;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
 @SpringBootApplication
@@ -14,6 +15,14 @@ public class ReferalSystemApplication {
 
   @Bean
   public RestTemplate restTemplate() {
-    return new RestTemplate();
+    RestTemplate restTemplate = new RestTemplate();
+    SimpleClientHttpRequestFactory requestFactory = new SimpleClientHttpRequestFactory();
+
+    // Set the read timeout in milliseconds
+    int timeout = 10000; // 5 seconds
+    requestFactory.setReadTimeout(timeout);
+
+    restTemplate.setRequestFactory(requestFactory);
+    return restTemplate;
   }
 }
