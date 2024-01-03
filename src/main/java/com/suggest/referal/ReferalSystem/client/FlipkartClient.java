@@ -57,6 +57,7 @@ public class FlipkartClient {
     }
     return response;
   }
+
   public ResponseEntity<String> getFlipkartDataByFetch(String searchQuery) {
     ResponseEntity<String> responseEntity = null;
     try {

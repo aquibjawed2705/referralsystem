@@ -1,18 +1,16 @@
 package com.suggest.referal.ReferalSystem.controller;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.suggest.referal.ReferalSystem.builder.ResponseBuilder;
 import com.suggest.referal.ReferalSystem.client.FlipkartClient;
-import com.suggest.referal.ReferalSystem.dto.flipkart.Product;
-import com.suggest.referal.ReferalSystem.dto.flipkart.ProductResponses;
+import com.suggest.referal.ReferalSystem.dto.flipkart.fetch.ProductInfo;
 import com.suggest.referal.ReferalSystem.entity.UrlFinder;
 import com.suggest.referal.ReferalSystem.response.SearchResponse;
 import com.suggest.referal.ReferalSystem.service.UrlService;
-import com.suggest.referal.ReferalSystem.transformer.ResponseTransformer;
-import com.suggest.referal.ReferalSystem.util.ProductUtils;
+import com.suggest.referal.ReferalSystem.util.JsonUtil;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,8 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.concurrent.*;
 
 @RestController
 @RequestMapping("/referral/system")
@@ -42,46 +38,33 @@ public class ReferralSystemController {
       log.info("Received request for search string: {}", searchString);
       String searchResult = flipkartClient.getFlipkartDataByFetch(searchString).getBody();
       log.info("Search Result is {}", searchResult);
-      Set<String> productIds = ProductUtils.getFilteredDataFromFetch(searchResult);
-      log.info("Product Ids are {}", productIds);
-      List<Product> products = new ArrayList<>();
-      ExecutorService executorService = Executors.newFixedThreadPool(5); // Adjust the pool size as needed
-      List<Future<Product>> futures = new ArrayList<>();
-      for (String productId : productIds) {
-        Callable<Product> callable = () -> {
-          ResponseEntity<String> result = flipkartClient.getFlipkartDataByProductId(productId);
-          if (result != null) {
-            return ResponseTransformer.transformIntoProduct(result.getBody());
-          }
-          return null;
-        };
-
-        futures.add(executorService.submit(callable));
-      }
-
-      for (Future<Product> future : futures) {
-        try {
-          Product product = future.get(); // This will block until the result is available
-          if (product != null) {
-            products.add(product);
-          }
-        } catch (InterruptedException | ExecutionException e) {
-         log.error("Exception while paralleism is {}", e);
+      JsonNode jsonNode = JsonUtil.convert(searchResult, JsonNode.class);
+      List<JsonNode> jsonNodes = new ArrayList<>();
+      jsonNode.get("RESPONSE").get("slots").elements().forEachRemaining(jsonNode1 -> {
+        if (!jsonNode1.get("slotType").asText().equals("LOGICAL")) {
+          jsonNode1.get("widget").get("data").elements().forEachRemaining(jsonNode2 -> {
+            jsonNode2.elements().forEachRemaining(s -> {
+              if (s.get("adInfo") != null || s.get("addToWishlist") != null) {
+                jsonNodes.add(s.get("productInfo").get("value"));
+              }
+            });
+          });
         }
+      });
 
-        if (products.size() >= count) {
-          break;
-        }
+      List<ProductInfo> products = new ArrayList<>();
+      for (JsonNode jsonNode1:jsonNodes) {
+        ProductInfo productInfo = JsonUtil.convert(jsonNode1, ProductInfo.class);
+        products.add(productInfo);
       }
-      executorService.shutdown(); // Shutdown the executor service
-
-      searchResponse = ResponseBuilder.buildSearchResponses(new ProductResponses(products));
+      searchResponse = ResponseBuilder.buildSearchResponses(products);
     } catch (Exception e) {
       log.error("Exception is {}", e);
     }
     log.info("Response is {}", searchResponse);
     return searchResponse;
   }
+
   @GetMapping("/fetch")
   public String saveUrl(@RequestParam String searchString) {
     try {
@@ -89,10 +72,10 @@ public class ReferralSystemController {
       String searchResult = flipkartClient.getFlipkartDataByFetch(searchString).getBody();
       log.info("Search Result is {}", searchResult);
       return searchResult;
-    }catch (Exception e) {
+    } catch (Exception e) {
       log.error("Exception is {}", e);
     }
-   return "unable to fetch data!!";
+    return "unable to fetch data!!";
   }
 
   private void getData(String link, UrlFinder urlFinder) {
