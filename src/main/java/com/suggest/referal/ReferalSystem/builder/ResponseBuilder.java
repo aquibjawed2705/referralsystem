@@ -26,8 +26,8 @@ public class ResponseBuilder {
   public static List<SearchResponse> buildSearchResponses(List<ProductInfo> products) {
     List<SearchResponse> searchResponses = products.stream().map(product -> {
       SearchResponse searchResponse = new SearchResponse();
-      searchResponse.setImageUrl(product.getMedia().getImages().get(0).getUrl().replace("{@width}", "200").replace("{@height}", "200").replace("{@quality}", "90").replaceFirst("http", "https"));
-      searchResponse.setProductUrl(product.getSmartUrl().replaceFirst("http://rukmini1", "https://rukmini2") + "&affid=ajaquibaj");
+      searchResponse.setImageUrl(product.getMedia().getImages().get(0).getUrl().replace("{@width}", "200").replace("{@height}", "200").replace("{@quality}", "90").replaceFirst("http://rukmini1", "https://rukmini2"));
+      searchResponse.setProductUrl(product.getSmartUrl().replaceFirst("http", "https") + "&affid=ajaquibaj");
       searchResponse.setPrice(product.getPricing().getFinalPrice().getValue());
       searchResponse.setCurrency(product.getPricing().getFinalPrice().getCurrency());
       searchResponse.setTitle(product.getTitles().getTitle());
