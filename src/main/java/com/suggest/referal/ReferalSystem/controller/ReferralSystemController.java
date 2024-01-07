@@ -2,6 +2,7 @@ package com.suggest.referal.ReferalSystem.controller;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.suggest.referal.ReferalSystem.builder.ResponseBuilder;
+import com.suggest.referal.ReferalSystem.cache.ReferralCache;
 import com.suggest.referal.ReferalSystem.client.FlipkartClient;
 import com.suggest.referal.ReferalSystem.dto.flipkart.fetch.ProductInfo;
 import com.suggest.referal.ReferalSystem.entity.UrlFinder;
@@ -30,10 +31,19 @@ public class ReferralSystemController {
   @Autowired
   private FlipkartClient flipkartClient;
 
+  @Autowired
+  private ReferralCache referralCache;
+
   @GetMapping("/search")
   public List<SearchResponse> getUrlName(@RequestParam String searchString, @RequestParam int count, HttpServletResponse httpResponse) {
     httpResponse.addHeader("Access-Control-Allow-Origin", "*");
+
+    if(referralCache.get(searchString)!=null){
+      return referralCache.get(searchString);
+    }
+
     List<SearchResponse> searchResponse = null;
+
     try {
       log.info("Received request for search string: {}", searchString);
       String searchResult = flipkartClient.getFlipkartDataByFetch(searchString).getBody();
@@ -58,6 +68,9 @@ public class ReferralSystemController {
         products.add(productInfo);
       }
       searchResponse = ResponseBuilder.buildSearchResponses(products);
+      if(referralCache.get(searchString)==null && searchString.equals("trending")){
+        referralCache.put("trending",searchResponse);
+      }
     } catch (Exception e) {
       log.error("Exception is {}", e);
     }
