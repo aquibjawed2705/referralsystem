@@ -4,6 +4,9 @@ import lombok.Data;
 
 @Data
 public class MaximumRetailPrice {
-  private double amount;
-  private String currency;
+
+	private double amount;
+
+	private String currency;
+
 }

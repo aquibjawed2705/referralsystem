@@ -8,11 +8,17 @@ import java.util.List;
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ProductInfo {
-  private Media media;
-  private Pricing pricing;
-  private Rating rating;
-  private String smartUrl;
-  private List<String> tags;
-  private Titles titles;
-}
 
+	private Media media;
+
+	private Pricing pricing;
+
+	private Rating rating;
+
+	private String smartUrl;
+
+	private List<String> tags;
+
+	private Titles titles;
+
+}

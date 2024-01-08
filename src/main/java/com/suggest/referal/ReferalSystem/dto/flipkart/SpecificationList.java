@@ -5,6 +5,9 @@ import lombok.Data;
 
 @Data
 public class SpecificationList {
-  private String key;
-  private List<SpecificationValue> values;
+
+	private String key;
+
+	private List<SpecificationValue> values;
+
 }

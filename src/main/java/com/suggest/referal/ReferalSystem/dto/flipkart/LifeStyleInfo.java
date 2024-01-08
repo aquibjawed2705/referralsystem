@@ -7,8 +7,12 @@ import java.util.List;
 
 @Data
 public class LifeStyleInfo {
-  private String sleeve;
-  private String neck;
-  @JsonProperty("idealFor")
-  private List<String> idealFor;
+
+	private String sleeve;
+
+	private String neck;
+
+	@JsonProperty("idealFor")
+	private List<String> idealFor;
+
 }

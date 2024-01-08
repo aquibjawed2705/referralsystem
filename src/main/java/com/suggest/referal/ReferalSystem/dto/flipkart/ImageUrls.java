@@ -5,10 +5,14 @@ import lombok.Data;
 
 @Data
 public class ImageUrls {
-  @JsonProperty("200x200")
-  private String _200x200;
-  @JsonProperty("400x400")
-  private String _400x400;
-  @JsonProperty("800x800")
-  private String _800x800;
+
+	@JsonProperty("200x200")
+	private String _200x200;
+
+	@JsonProperty("400x400")
+	private String _400x400;
+
+	@JsonProperty("800x800")
+	private String _800x800;
+
 }

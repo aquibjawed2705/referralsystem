@@ -7,5 +7,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UrlRepository extends JpaRepository<UrlFinder, Long> {
-  List<UrlFinder> findByName(String name);
+
+	List<UrlFinder> findByName(String name);
+
 }

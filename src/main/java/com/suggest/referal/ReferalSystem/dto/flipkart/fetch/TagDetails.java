@@ -6,5 +6,7 @@ import lombok.Data;
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class TagDetails {
-  // Define properties as needed.
+
+	// Define properties as needed.
+
 }

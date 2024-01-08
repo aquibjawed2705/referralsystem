@@ -6,8 +6,13 @@ import lombok.Data;
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Availability {
-  private String messageIntent;
-  private String displayState;
-  private String intent;
-  private boolean showMessage;
+
+	private String messageIntent;
+
+	private String displayState;
+
+	private String intent;
+
+	private boolean showMessage;
+
 }

@@ -8,5 +8,7 @@ import java.util.List;
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Media {
-  private List<Image> images;
+
+	private List<Image> images;
+
 }

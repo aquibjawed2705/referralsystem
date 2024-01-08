@@ -6,7 +6,11 @@ import lombok.Data;
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Buyability {
-  private String intent;
-  private String message;
-  private boolean showMessage;
+
+	private String intent;
+
+	private String message;
+
+	private boolean showMessage;
+
 }

@@ -5,10 +5,17 @@ import lombok.Data;
 
 @Data
 public class BooksInfo {
-  private String language;
-  private String binding;
-  private int pages;
-  private String publisher;
-  private int year;
-  private List<String> authors;
+
+	private String language;
+
+	private String binding;
+
+	private int pages;
+
+	private String publisher;
+
+	private int year;
+
+	private List<String> authors;
+
 }

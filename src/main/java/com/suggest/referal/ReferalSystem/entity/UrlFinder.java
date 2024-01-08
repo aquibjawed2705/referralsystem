@@ -6,15 +6,17 @@ import lombok.Data;
 @Entity
 @Data
 public class UrlFinder {
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
 
-  @Column(length = 2000)
-  private String href;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-  private String name;
+	@Column(length = 2000)
+	private String href;
 
-  @Column(length = 2000)
-  private String src;
+	private String name;
+
+	@Column(length = 2000)
+	private String src;
+
 }

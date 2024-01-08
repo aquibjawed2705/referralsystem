@@ -6,7 +6,11 @@ import lombok.Data;
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ProductCardTagDetails {
-  private Image image;
-  private TagDetails tagDetails;
-  private String type;
+
+	private Image image;
+
+	private TagDetails tagDetails;
+
+	private String type;
+
 }

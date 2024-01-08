@@ -76,16 +76,21 @@
 					</excludes>
 				</configuration>
 			</plugin>
-					<plugin>
-						<groupId>org.openrewrite.maven</groupId>
-						<artifactId>rewrite-maven-plugin</artifactId>
-						<version>5.17.1</version>
-						<configuration>
-							<activeRecipes>
-								<recipe>org.openrewrite.java.format.AutoFormat</recipe>
-							</activeRecipes>
-						</configuration>
-					</plugin>
+			<plugin>
+				<groupId>io.spring.javaformat</groupId>
+				<artifactId>spring-javaformat-maven-plugin</artifactId>
+				<version>0.0.31</version> <!-- Check for the latest version on Maven Central -->
+				<configuration>
+					<skip>false</skip>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>apply</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
 

@@ -6,8 +6,13 @@ import lombok.Data;
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Titles {
-  private String coSubtitle;
-  private String newTitle;
-  private String superTitle;
-  private String title;
+
+	private String coSubtitle;
+
+	private String newTitle;
+
+	private String superTitle;
+
+	private String title;
+
 }

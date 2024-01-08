@@ -6,8 +6,13 @@ import lombok.Data;
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class AnalyticsData {
-  private String category;
-  private String subCategory;
-  private String superCategory;
-  private String vertical;
+
+	private String category;
+
+	private String subCategory;
+
+	private String superCategory;
+
+	private String vertical;
+
 }

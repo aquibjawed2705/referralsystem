@@ -4,7 +4,9 @@ import com.suggest.referal.ReferalSystem.entity.UrlFinder;
 import java.util.List;
 
 public interface UrlService {
-  List<UrlFinder> getUrlByName(String name);
 
-  void saveUrlByName(UrlFinder urlFinder);
+	List<UrlFinder> getUrlByName(String name);
+
+	void saveUrlByName(UrlFinder urlFinder);
+
 }

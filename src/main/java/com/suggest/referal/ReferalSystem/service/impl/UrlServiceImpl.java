@@ -11,17 +11,18 @@ import org.springframework.stereotype.Service;
 @Service
 public class UrlServiceImpl implements UrlService {
 
-  @Autowired
-  private UrlRepository urlRepository;
+	@Autowired
+	private UrlRepository urlRepository;
 
-  @Override
-  public List<UrlFinder> getUrlByName(String name) {
-    return urlRepository.findByName(name);
-  }
+	@Override
+	public List<UrlFinder> getUrlByName(String name) {
+		return urlRepository.findByName(name);
+	}
 
-  @Override
-  @Transactional
-  public void saveUrlByName(UrlFinder urlFinder) {
-    urlRepository.save(urlFinder);
-  }
+	@Override
+	@Transactional
+	public void saveUrlByName(UrlFinder urlFinder) {
+		urlRepository.save(urlFinder);
+	}
+
 }

@@ -6,14 +6,25 @@ import lombok.Data;
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class FinalPrice {
-  private String additionalText;
-  private String currency;
-  private String decimalValue;
-  private int discount;
-  private double downpaymentRate;
-  private boolean downpaymentRequired;
-  private String name;
-  private boolean strikeOff;
-  private String textStyle;
-  private double value;
+
+	private String additionalText;
+
+	private String currency;
+
+	private String decimalValue;
+
+	private int discount;
+
+	private double downpaymentRate;
+
+	private boolean downpaymentRequired;
+
+	private String name;
+
+	private boolean strikeOff;
+
+	private String textStyle;
+
+	private double value;
+
 }

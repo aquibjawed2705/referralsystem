@@ -6,8 +6,13 @@ import lombok.Data;
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Grade {
-  private String color;
-  private String id;
-  private String name;
-  private String shortDesc;
+
+	private String color;
+
+	private String id;
+
+	private String name;
+
+	private String shortDesc;
+
 }
