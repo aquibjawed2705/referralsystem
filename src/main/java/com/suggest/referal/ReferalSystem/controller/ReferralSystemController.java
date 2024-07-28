@@ -26,8 +26,8 @@ import java.util.List;
 @Slf4j
 public class ReferralSystemController {
 
-	@Autowired
-	private UrlService urlService;
+//	@Autowired
+//	private UrlService urlService;
 
 	@Autowired
 	private FlipkartClient flipkartClient;
